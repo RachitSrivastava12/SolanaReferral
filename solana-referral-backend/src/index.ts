@@ -8,7 +8,7 @@ dotenv.config();
 
 const app = express();
 app.use(express.json());
-app.use('/api/business', businessRoutes);
+//app.use('/api/business', businessRoutes);
 app.use('/api/referrer', referrerRoutes);
 
 const PORT = process.env.PORT || 5000;
