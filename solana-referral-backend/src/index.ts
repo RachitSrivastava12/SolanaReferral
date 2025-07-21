@@ -1,15 +1,20 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import businessRoutes from './routes/businessRoutes';
 import referrerRoutes from './routes/referrerRoutes';
 
 dotenv.config();
 
 const app = express();
+
+app.use(cors());
 app.use(express.json());
+
+
 //app.use('/api/business', businessRoutes);
-app.use('/api/referrer', referrerRoutes);
+app.use('/referrer', referrerRoutes);
 
 const PORT = process.env.PORT || 5000;
 

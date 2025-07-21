@@ -5,21 +5,38 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f2c6b6f0-6f38-442a-a1d9-9dcff0562fea" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/solana-referral-frontend" beforeDir="false" afterPath="$PROJECT_DIR$/solana-referral-frontend" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/solana-referral-frontend/app/globals.css" beforeDir="false" afterPath="$PROJECT_DIR$/solana-referral-frontend/app/globals.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/solana-referral-frontend/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/solana-referral-frontend/app/layout.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/solana-referral-frontend/app/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/solana-referral-frontend/app/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/solana-referral-frontend/bun.lock" beforeDir="false" afterPath="$PROJECT_DIR$/solana-referral-frontend/bun.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/solana-referral-frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/solana-referral-frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/solana-referral-frontend/tailwind.config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/solana-referral-frontend/tailwind.config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/depin-referral" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/solana-referral-backend/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/solana-referral-backend/node_modules/.package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/solana-referral-backend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/solana-referral-backend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/solana-referral-backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/solana-referral-backend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/solana-referral-backend/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/solana-referral-backend/src/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/solana-referral-backend/src/models/Referral.ts" beforeDir="false" afterPath="$PROJECT_DIR$/solana-referral-backend/src/models/Referral.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/solana-referral-backend/src/routes/referrerRoutes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/solana-referral-backend/src/routes/referrerRoutes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/solana-referral-frontend" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/solana-referral-backend/src/anchor/solanaClient.ts" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/solana-referral-backend/src/routes/referrerRoutes.ts" root0="FORCE_HIGHLIGHTING" />
+  </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
@@ -29,24 +46,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
-    "junie.onboarding.icon.badge.shown": "true",
-    "last_opened_file_path": "/home/rachit/Documents/refsode",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "ts.external.directory.path": "/home/rachit/Documents/refsode/solana-referral-frontend/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/rachit/Documents/refsode&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/home/rachit/Documents/refsode/ref-frontend/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/solana-referral-backend/src" />
@@ -69,11 +87,38 @@
       <workItem from="1751480685609" duration="8999000" />
       <workItem from="1751630077426" duration="681000" />
       <workItem from="1751810044341" duration="15000" />
-      <workItem from="1751818262276" duration="5966000" />
+      <workItem from="1751818262276" duration="6330000" />
+      <workItem from="1752120396936" duration="5235000" />
+      <workItem from="1752126076922" duration="9361000" />
+      <workItem from="1752294110559" duration="4536000" />
+      <workItem from="1752302281030" duration="7089000" />
+      <workItem from="1752313660955" duration="1529000" />
+      <workItem from="1752412753847" duration="798000" />
+      <workItem from="1752495133052" duration="4182000" />
+      <workItem from="1752509353800" duration="8017000" />
+      <workItem from="1752596010830" duration="15899000" />
+      <workItem from="1752954171437" duration="12645000" />
+      <workItem from="1752998515971" duration="3093000" />
+      <workItem from="1753025919719" duration="7571000" />
+      <workItem from="1753034280001" duration="2621000" />
+      <workItem from="1753083642939" duration="1005000" />
+      <workItem from="1753092716508" duration="176000" />
+      <workItem from="1753093674732" duration="1832000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
   </component>
 </project>
