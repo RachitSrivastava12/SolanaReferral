@@ -1,41 +1,66 @@
 import * as anchor from '@project-serum/anchor';
-import { Connection } from "@solana/web3.js";
-import fs from 'fs';
-import path from "node:path";
+import { Connection, Keypair } from '@solana/web3.js';
+import { readFileSync } from 'fs';
+import path from 'path';
 
-// Read IDL and wallet with proper error handling
-let idl: any;
-let walletKey: number[];
+// Load your program IDL
+import idl from './idl';
 
+// Program ID from your IDL file
+const PROGRAM_ID = new anchor.web3.PublicKey(idl.address);
+
+// Network configuration - CHANGE THIS BASED ON WHERE YOUR PROGRAM IS DEPLOYED
+const NETWORK = 'devnet'; // or 'mainnet-beta' or 'http://localhost:8899'
+const connection = new Connection(
+    NETWORK === 'devnet'
+        ? 'https://api.devnet.solana.com'
+        : NETWORK === 'mainnet-beta'
+            ? 'https://api.mainnet-beta.solana.com'
+            : 'http://localhost:8899'
+);
+
+// Load wallet from keypair file
+let wallet: anchor.Wallet;
 try {
-    idl = JSON.parse(fs.readFileSync(path.join(__dirname, "idl.json"), "utf8"));
+    const keypairPath = process.env.SOLANA_KEYPAIR_PATH || path.join(process.env.HOME || '', '.config/solana/id.json');
+    const keypairData = JSON.parse(readFileSync(keypairPath, 'utf8'));
+    const keypair = Keypair.fromSecretKey(new Uint8Array(keypairData));
+    wallet = new anchor.Wallet(keypair);
+    console.log('Wallet public key:', wallet.publicKey.toString());
 } catch (error) {
-    console.error("Error reading idl.json:", error);
-    throw new Error("Failed to read IDL file");
+    console.error('Failed to load wallet:', error);
+    process.exit(1);
 }
 
-try {
-    walletKey = JSON.parse(fs.readFileSync(path.join(__dirname, "keypair.json"), "utf8"));
-} catch (error) {
-    console.error("Error reading keypair.json:", error);
-    throw new Error("Failed to read keypair file");
-}
-
-// Create wallet and connection
-const wallet = anchor.web3.Keypair.fromSecretKey(new Uint8Array(walletKey));
-const connection = new Connection('https://api.devnet.solana.com', 'confirmed');
-const walletWrapper = new anchor.Wallet(wallet);
-const provider = new anchor.AnchorProvider(connection, walletWrapper, {
-    preflightCommitment: 'confirmed',
-    commitment: 'confirmed'
+// Create provider
+const provider = new anchor.AnchorProvider(connection, wallet, {
+    commitment: 'confirmed',
 });
 
+// Set as default provider
 anchor.setProvider(provider);
 
-const programId = new anchor.web3.PublicKey('AsykMkUJfeagXTQa2KDgDhMLAGPPi1K6rLS2pwXHtgjx');
-const program = new anchor.Program(idl, programId, provider);
+// Create program instance
+const program = new anchor.Program(idl as any, PROGRAM_ID, provider);
 
-// Log wallet public key for debugging
-console.log("Wallet public key:", wallet.publicKey.toString());
+// Verify program exists on the network
+async function verifyProgramExists() {
+    try {
+        const programInfo = await connection.getAccountInfo(PROGRAM_ID);
+        if (!programInfo) {
+            console.error(`❌ Program ${PROGRAM_ID.toString()} does not exist on ${NETWORK}`);
+            console.log('Please deploy your program first using: anchor deploy');
+            process.exit(1);
+        }
+        console.log(`✅ Program ${PROGRAM_ID.toString()} found on ${NETWORK}`);
+        console.log(`✅ Program authority: ${programInfo.owner.toString()}`);
+    } catch (error) {
+        console.error('Error checking program:', error);
+        process.exit(1);
+    }
+}
+
+// Call verification on module load
+verifyProgramExists();
 
 export { connection, program, provider, wallet };

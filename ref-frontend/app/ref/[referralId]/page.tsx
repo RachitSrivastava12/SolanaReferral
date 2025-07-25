@@ -26,7 +26,7 @@ export default function ReferralPage() {
         if (newCount <= 0) {
           clearInterval(timer)
           // Redirect to the task
-          window.location.href = "https://example.com/task"
+          window.location.href = "https://google.com"
           return 0
         }
         return newCount

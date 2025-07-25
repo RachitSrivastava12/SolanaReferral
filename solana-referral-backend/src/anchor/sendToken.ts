@@ -20,7 +20,9 @@ export const sendToken = async (
 
         // Derive sender and receiver token accounts
         const senderTokenAccount = await getAssociatedTokenAddress(mint, sender);
+        console.log("Sender token account:", senderTokenAccount.toString());
         const receiverTokenAccount = await getAssociatedTokenAddress(mint, receiver);
+        console.log("Receiver token account:", receiverTokenAccount.toString());
 
         const tx = new Transaction();
 
@@ -28,6 +30,7 @@ export const sendToken = async (
         try {
             await getAccount(connection, receiverTokenAccount);
         } catch (err) {
+            console.log("Creating associated token account for receiver");
             tx.add(
                 createAssociatedTokenAccountInstruction(
                     sender,                // payer
@@ -39,14 +42,15 @@ export const sendToken = async (
         }
 
         // Add the Anchor program instruction to send tokens
+        // NOTE: Use snake_case to match the Rust contract account names
         tx.add(
             await program.methods
                 .sendToken(new anchor.BN(amount))
                 .accounts({
-                    fromTokenAccount: senderTokenAccount,
-                    toTokenAccount: receiverTokenAccount,
+                    from_token_account: senderTokenAccount,  // Changed from fromTokenAccount
+                    to_token_account: receiverTokenAccount,   // Changed from toTokenAccount
                     authority: sender,
-                    tokenProgram: TOKEN_PROGRAM_ID,
+                    token_program: TOKEN_PROGRAM_ID,          // Changed from tokenProgram
                 })
                 .instruction()
         );

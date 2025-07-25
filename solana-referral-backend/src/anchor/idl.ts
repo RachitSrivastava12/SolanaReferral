@@ -1,4 +1,4 @@
-{
+export default {
   "address": "4uL34WQ31gYhMjkks7bUd9yx2TYztvj2iUp9BjXvpnQg",
   "metadata": {
     "name": "referral_contract",
@@ -51,4 +51,4 @@
       ]
     }
   ]
-}
+};
