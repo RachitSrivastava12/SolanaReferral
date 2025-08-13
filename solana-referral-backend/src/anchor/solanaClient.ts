@@ -22,10 +22,26 @@ const connection = new Connection(
 // Load wallet from keypair file
 let wallet: anchor.Wallet;
 try {
-    const keypairPath = process.env.SOLANA_KEYPAIR_PATH || path.join(process.env.HOME || '', '.config/solana/id.json');
-    const keypairData = JSON.parse(readFileSync(keypairPath, 'utf8'));
-    const keypair = Keypair.fromSecretKey(new Uint8Array(keypairData));
+    // const keypairPath = process.env.SOLANA_KEYPAIR_PATH || path.join(process.env.HOME || '', '.config/solana/id.json');
+    // const keypairData = JSON.parse(readFileSync(keypairPath, 'utf8'));
+    // const keypair = Keypair.fromSecretKey(new Uint8Array(keypairData));
+    // wallet = new anchor.Wallet(keypair);
+    let keypair: Keypair;
+
+    if (process.env.SOLANA_KEYPAIR) {
+        // Load from environment variable (Render)
+        const secretKey = Uint8Array.from(JSON.parse(process.env.SOLANA_KEYPAIR));
+        keypair = Keypair.fromSecretKey(secretKey);
+    } else {
+        // Fallback for local dev
+        const keypairPath = process.env.SOLANA_KEYPAIR_PATH || path.join(process.env.HOME || '', '.config/solana/id.json');
+        const keypairData = JSON.parse(readFileSync(keypairPath, 'utf8'));
+        keypair = Keypair.fromSecretKey(new Uint8Array(keypairData));
+    }
+
     wallet = new anchor.Wallet(keypair);
+    console.log('Wallet public key:', wallet.publicKey.toString());
+
     console.log('Wallet public key:', wallet.publicKey.toString());
 } catch (error) {
     console.error('Failed to load wallet:', error);
