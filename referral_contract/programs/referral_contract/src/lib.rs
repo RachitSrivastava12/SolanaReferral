@@ -23,15 +23,17 @@ pub mod referral_contract {
 
 #[derive(Accounts)]
 pub struct SendToken<'info> {
+    /// Must be mutable so the amount decreases
     #[account(mut)]
     pub from_token_account: Account<'info, TokenAccount>,
 
+    /// Must be mutable so the amount increases
     #[account(mut)]
     pub to_token_account: Account<'info, TokenAccount>,
 
-    /// The signer who owns the `from_token_account`
+    /// Signer who owns the `from_token_account`
     pub authority: Signer<'info>,
 
-    /// The SPL Token program
+    /// SPL Token program
     pub token_program: Program<'info, Token>,
 }
