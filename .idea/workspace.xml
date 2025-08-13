@@ -8,11 +8,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ref-frontend/app/business/create-campaign/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/ref-frontend/app/business/create-campaign/page.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ref-frontend/app/business/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/ref-frontend/app/business/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/solana-referral-backend/src/anchor/idl.ts" beforeDir="false" afterPath="$PROJECT_DIR$/solana-referral-backend/src/anchor/idl.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/solana-referral-backend/src/anchor/sendToken.ts" beforeDir="false" afterPath="$PROJECT_DIR$/solana-referral-backend/src/anchor/sendToken.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/solana-referral-backend/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/solana-referral-backend/src/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/solana-referral-backend/src/models/campaign.ts" beforeDir="false" afterPath="$PROJECT_DIR$/solana-referral-backend/src/models/campaign.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/solana-referral-backend/src/routes/businessRoutes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/solana-referral-backend/src/routes/businessRoutes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ref-frontend/app/referrer/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/ref-frontend/app/referrer/page.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,7 +109,8 @@
       <workItem from="1755059650413" duration="503000" />
       <workItem from="1755060167684" duration="15998000" />
       <workItem from="1755093019106" duration="2467000" />
-      <workItem from="1755097851671" duration="1524000" />
+      <workItem from="1755097851671" duration="2205000" />
+      <workItem from="1755103778478" duration="2621000" />
     </task>
     <servers />
   </component>
@@ -137,11 +134,6 @@
         <line-breakpoint enabled="true" type="javascript">
           <url>file://$PROJECT_DIR$/ref-frontend/app/referrer/loading.tsx</url>
           <option name="timeStamp" value="1" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/ref-frontend/app/referrer/page.tsx</url>
-          <line>30</line>
-          <option name="timeStamp" value="2" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
