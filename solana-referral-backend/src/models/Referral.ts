@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IReferral extends Document {
     referrer: mongoose.Types.ObjectId;
-    business: mongoose.Types.ObjectId;
+    business: string;
     campaign: mongoose.Types.ObjectId;
     paid: boolean;
     transactionSignature?: string;

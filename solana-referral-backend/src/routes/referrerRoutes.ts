@@ -47,46 +47,55 @@ router.get("/campaigns", async (req: Request, res: Response) => {
 router.post("/create-referral", async (req: Request, res: Response) => {
     try {
         const { address, campaignId } = req.body;
-        
+
         if (!address || !campaignId) {
-            res.status(400).json({ message: 'Address and Campaign ID are required' });
-            return;
+            return res.status(400).json({ message: 'Address and Campaign ID are required' });
         }
 
+        // Fetch campaign
         const campaign = await Campaign.findById(campaignId);
         if (!campaign) {
-            res.status(404).json({ message: 'Campaign not found with this ID' });
-            return;
+            return res.status(404).json({ message: 'Campaign not found with this ID' });
         }
 
-        const referrer = await Referrer.findOne({ walletAddress: address });
+        // Fetch or create referrer
+        let referrer = await Referrer.findOne({ walletAddress: address });
         if (!referrer) {
-            res.status(404).json({ message: 'Referrer not found' });
-            return;
+            referrer = new Referrer({ walletAddress: address, earned: 0 });
+            await referrer.save();
+            console.log(`Created new referrer: ${address}`);
         }
 
+        // Use businessID as String directly
         const businessId = campaign.businessID;
-        
-        // Create referral entry without token transfer
+
+        // Create referral entry
         const referral = new Referral({
             referrer: referrer._id,
-            business: businessId,
+            business: businessId, // String from Campaign
             campaign: campaign._id,
-            paid: false, // Initially false
+            paid: false,
             createdAt: new Date()
         });
-        
+
         await referral.save();
+        console.log(`Referral created: ${referral._id} for campaign ${campaignId}`);
 
         res.status(200).json({
             message: 'Referral created successfully',
-            referralId: referral._id, 
+            referralId: referral._id,
             campaign: campaign
         });
 
     } catch (error) {
         console.error('Error creating referral:', error);
-        res.status(500).json({ message: 'Server error' });
+        if (error instanceof Error) {
+            console.error('Error details:', error.message, error.stack);
+        }
+        res.status(500).json({
+            message: 'Server error',
+            error: process.env.NODE_ENV === 'development' ? error.message : undefined
+        });
     }
 });
 
