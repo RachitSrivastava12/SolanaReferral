@@ -2,7 +2,7 @@ import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IReferral extends Document {
     referrer: mongoose.Types.ObjectId;
-    business: string;
+    business: string; // Changed to String to match Campaign.businessID
     campaign: mongoose.Types.ObjectId;
     paid: boolean;
     transactionSignature?: string;
@@ -11,36 +11,35 @@ export interface IReferral extends Document {
 }
 
 const ReferralSchema: Schema = new Schema({
-    referrer: { 
-        type: Schema.Types.ObjectId, 
-        ref: 'Referrer', 
-        required: true 
+    referrer: {
+        type: Schema.Types.ObjectId,
+        ref: 'Referrer',
+        required: true
     },
-    business: { 
-        type: Schema.Types.ObjectId, 
-        ref: 'Business', 
-        required: true 
+    business: {
+        type: String, // Updated to String
+        required: true
     },
-    campaign: { 
-        type: Schema.Types.ObjectId, 
-        ref: 'Campaign', 
-        required: true 
+    campaign: {
+        type: Schema.Types.ObjectId,
+        ref: 'Campaign',
+        required: true
     },
-    paid: { 
-        type: Boolean, 
-        default: false 
+    paid: {
+        type: Boolean,
+        default: false
     },
     transactionSignature: {
         type: String,
         required: false
     },
-    createdAt: { 
-        type: Date, 
-        default: Date.now 
+    createdAt: {
+        type: Date,
+        default: Date.now
     },
-    updatedAt: { 
-        type: Date, 
-        default: Date.now 
+    updatedAt: {
+        type: Date,
+        default: Date.now
     }
 });
 
