@@ -2,7 +2,7 @@ import type React from "react"
 import "./globals.css"
 import { Inter } from "next/font/google"
 import { WalletProvider } from "@/components/wallet-provider"
-
+import { Analytics } from "@vercel/analytics/react"
 const inter = Inter({ subsets: ["latin"] })
 
 export const metadata = {
@@ -37,6 +37,7 @@ export default function RootLayout({
             <main className="relative z-10 container mx-auto px-4 py-8">{children}</main>
           </div>
         </WalletProvider>
+        <Analytics />
       </body>
     </html>
   )

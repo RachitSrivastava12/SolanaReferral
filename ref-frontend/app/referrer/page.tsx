@@ -103,7 +103,7 @@ export default function ReferrerDashboard() {
       setSelectedCampaign(campaign)
       setShowTaskPage(true)
 
-      console.log("Referral created successfully:", data)
+      console.log("Referral   created successfully:", data)
     } catch (error : any) {
       console.error("Error creating referral:", error)
       alert(`Failed to create referral: ${error.message}. Check console for details.`)
