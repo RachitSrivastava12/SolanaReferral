@@ -36,15 +36,14 @@ export default function ReferrerDashboard() {
     }
   }, [connected, publicKey])
 
-  // Fetch campaigns from MongoDB
+  // Fetch campaigns
   useEffect(() => {
     const fetchCampaigns = async () => {
       try {
         const res = await fetch(`${backendAPI}/referrer/campaigns`)
-        if (!res.ok) throw new Error("Failed to fetch campaigns")
         const data = await res.json()
-        setCampaigns(data.map((c: any) => ({
-          _id: c._id,
+        const formatted = data.map((c: any) => ({
+          id: c._id,
           title: c.title,
           description: c.description,
           reward: `${c.rewardperReferral} SOL`,
@@ -52,15 +51,15 @@ export default function ReferrerDashboard() {
           category: c.category || "General",
           difficulty: c.difficulty || "Medium",
           requirements: c.thingsTodo,
-          rating: c.rating || 4.5,
-          activeReferrers: c.activeReferrers || 0,
-          conversionRate: c.conversionRate || "0%",
-          logo: c.logo || "/placeholder.svg",
+          rating: 4.5,
+          activeReferrers: Math.floor(Math.random() * 100) + 20,
+          conversionRate: `${(Math.random() * 10 + 5).toFixed(1)}%`,
+          logo: "/placeholder.svg",
           rewardperReferral: c.rewardperReferral,
-        })))
+        }))
+        setCampaigns(formatted)
       } catch (err) {
         console.error("Failed to fetch campaigns:", err)
-        setCampaigns([])
       }
     }
 
@@ -74,29 +73,29 @@ export default function ReferrerDashboard() {
     conversionRate: "11.2%",
   })
 
-  // Generate referral link
+  // Generate referral link (NO token transfer yet)
   const generateReferralLink = async (campaign: any) => {
     if (!publicKey) return
 
     setIsGeneratingLink(true)
     try {
+      // Just create a referral entry without token transfer
       const response = await fetch(`${backendAPI}/referrer/create-referral`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           address: publicKey.toString(),
-          campaignId: campaign._id, // Use _id from MongoDB
+          campaignId: campaign.id
         }),
       })
 
       if (!response.ok) {
-        const errorText = await response.text()
-        throw new Error(`Failed to create referral: ${errorText}`)
+        throw new Error('Failed to create referral')
       }
 
       const data = await response.json()
-      if (!data.referralId) throw new Error("No referral ID returned from server")
 
+      // Generate the referral link using the referral ID
       const link = `${window.location.origin}/ref/${data.referralId}`
       setReferralLink(link)
       setReferralId(data.referralId)
@@ -104,9 +103,10 @@ export default function ReferrerDashboard() {
       setShowTaskPage(true)
 
       console.log("Referral created successfully:", data)
-    } catch (error :any) {
+
+    } catch (error) {
       console.error("Error creating referral:", error)
-      alert(`Failed to create referral: ${error.message}. Check console for details.`)
+      alert("Failed to create referral. Please try again.")
     } finally {
       setIsGeneratingLink(false)
     }
@@ -123,8 +123,8 @@ export default function ReferrerDashboard() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           address: publicKey.toString(),
-          campaignId: selectedCampaign._id,
-          referralId: referralId,
+          campaignId: selectedCampaign.id,
+          referralId: referralId
         }),
       })
 
@@ -138,6 +138,7 @@ export default function ReferrerDashboard() {
       console.log("Task completed successfully:", data)
       console.log("Transaction signature:", data.transactionSignature)
       alert(`Task completed! You earned ${selectedCampaign.rewardperReferral} SOL. Transaction: ${data.transactionSignature}`)
+
     } catch (error) {
       console.error("Error completing task:", error)
       alert("Failed to complete task. Please try again.")
@@ -436,7 +437,7 @@ export default function ReferrerDashboard() {
                       </div>
                   ) : (
                       filteredCampaigns.map((campaign, index) => (
-                          <Card key={campaign._id} className="border-2 border-gray-100 hover:border-purple-300 animate-slide-up">
+                          <Card key={campaign.id} className="border-2 border-gray-100 hover:border-purple-300 animate-slide-up">
                             <CardContent className="p-6">
                               <div className="flex flex-col lg:flex-row space-y-4 lg:space-y-0 lg:space-x-6">
                                 <div className="flex-1">
