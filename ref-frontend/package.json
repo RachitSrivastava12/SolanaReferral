@@ -41,6 +41,7 @@
     "@solana/wallet-adapter-react": "latest",
     "@solana/wallet-adapter-react-ui": "latest",
     "@solana/web3.js": "latest",
+    "@vercel/analytics": "^1.5.0",
     "autoprefixer": "^10.4.20",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
