@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import { Referrer } from '../models/Referrer';
 import Campaign from "../models/campaign";
 import { Referral } from "../models/Referral";
+import { RequestHandler} from "express";
 import { PublicKey } from "@solana/web3.js";
 import { getAssociatedTokenAddress } from "@solana/spl-token";
 import mongoose from "mongoose";
@@ -44,19 +45,79 @@ router.get("/campaigns", async (req: Request, res: Response) => {
 });
 
 // NEW ROUTE: Create referral without token transfer
-router.post("/create-referral", async (req: Request, res: Response) => {
+// router.post("/create-referral", async (req: Request, res: Response) => {
+//     try {
+//         const { address, campaignId } = req.body;
+//
+//         if (!address || !campaignId) {
+//             return res.status(400).json({ message: 'Address and Campaign ID are required' });
+//         }
+//
+//         // Fetch campaign
+//         const campaign = await Campaign.findById(campaignId);
+//         if (!campaign) {
+//             return res.status(404).json({ message: 'Campaign not found with this ID' });
+//         }
+//
+//         // Fetch or create referrer
+//         let referrer = await Referrer.findOne({ walletAddress: address });
+//         if (!referrer) {
+//             referrer = new Referrer({ walletAddress: address, earned: 0 });
+//             await referrer.save();
+//             console.log(`Created new referrer: ${address}`);
+//         }
+//
+//         // Use businessID as String directly
+//         const businessId = campaign.businessID;
+//
+//         // Create referral entry
+//         const referral = new Referral({
+//             referrer: referrer._id,
+//             business: businessId, // String from Campaign
+//             campaign: campaign._id,
+//             paid: false,
+//             createdAt: new Date()
+//         });
+//
+//         await referral.save();
+//         console.log(`Referral created: ${referral._id} for campaign ${campaignId}`);
+//
+//         res.status(200).json({
+//             message: 'Referral created successfully',
+//             referralId: referral._id,
+//             campaign: campaign
+//         });
+//
+//     } catch (error) {
+//         console.error('Error creating referral:', error);
+//         if (error instanceof Error) {
+//             console.error('Error details:', error.message, error.stack);
+//         }
+//         res.status(500).json({
+//             message: 'Server error',
+//             error: process.env.NODE_ENV === 'development' ? error.message : undefined
+//         });
+//     }
+// });
+
+const createReferralHandler: RequestHandler = async (req: Request, res: Response) => {
     try {
         const { address, campaignId } = req.body;
 
         if (!address || !campaignId) {
-            return res.status(400).json({ message: 'Address and Campaign ID are required' });
+            res.status(400).json({ message: 'Address and Campaign ID are required' });
+            return; // No return value, just exit
         }
+
+        console.log("Received request for campaignId:", campaignId, "and address:", address);
 
         // Fetch campaign
         const campaign = await Campaign.findById(campaignId);
         if (!campaign) {
-            return res.status(404).json({ message: 'Campaign not found with this ID' });
+            res.status(404).json({ message: 'Campaign not found with this ID' });
+            return;
         }
+        console.log("Found campaign:", campaign._id, "businessID:", campaign.businessID, "all data:", JSON.stringify(campaign));
 
         // Fetch or create referrer
         let referrer = await Referrer.findOne({ walletAddress: address });
@@ -65,14 +126,20 @@ router.post("/create-referral", async (req: Request, res: Response) => {
             await referrer.save();
             console.log(`Created new referrer: ${address}`);
         }
+        console.log("Found/created referrer:", referrer._id);
 
-        // Use businessID as String directly
+        // Validate and use businessID
         const businessId = campaign.businessID;
+        if (!businessId || typeof businessId !== 'string') {
+            res.status(400).json({ message: 'Invalid businessID in campaign' });
+            return;
+        }
+        console.log("Using businessID:", businessId);
 
         // Create referral entry
         const referral = new Referral({
             referrer: referrer._id,
-            business: businessId, // String from Campaign
+            business: businessId,
             campaign: campaign._id,
             paid: false,
             createdAt: new Date()
@@ -87,7 +154,7 @@ router.post("/create-referral", async (req: Request, res: Response) => {
             campaign: campaign
         });
 
-    } catch (error) {
+    } catch (error : any) {
         console.error('Error creating referral:', error);
         if (error instanceof Error) {
             console.error('Error details:', error.message, error.stack);
@@ -97,8 +164,9 @@ router.post("/create-referral", async (req: Request, res: Response) => {
             error: process.env.NODE_ENV === 'development' ? error.message : undefined
         });
     }
-});
+};
 
+router.post("/create-referral", createReferralHandler);
 // NEW ROUTE: Complete task and transfer tokens
 router.post("/complete-task", async (req: Request, res: Response) => {
     try {
