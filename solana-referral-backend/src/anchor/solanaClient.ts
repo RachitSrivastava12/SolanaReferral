@@ -2,6 +2,7 @@ import * as anchor from "@project-serum/anchor";
 import { Connection, Keypair } from "@solana/web3.js";
 import { readFileSync } from "fs";
 import path from "path";
+import keair from "./keypair"
 
 // Load your program IDL
 import idl from "./idl";
@@ -26,11 +27,11 @@ try {
   const a =  true;
   console.log(a);
 
-
-  if (process.env.secretKey) {
+ console.log();
+  if (keair) {
     // Load from environment variable
-    console.log(process.env.secretKey)
-    const secretKey = Uint8Array.from(JSON.parse(process.env.secretKey));
+    console.log(keair)
+    const secretKey = Uint8Array.from(keair);
     keypair = Keypair.fromSecretKey(secretKey);
     console.log("✅ Loaded wallet from env var `secretKey`");
   } else {
