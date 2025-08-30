@@ -23,9 +23,13 @@ const connection = new Connection(
 let wallet: anchor.Wallet;
 try {
   let keypair: Keypair;
+  const a =  true;
+  console.log(a);
+
 
   if (process.env.secretKey) {
     // Load from environment variable
+    console.log(process.env.secretKey)
     const secretKey = Uint8Array.from(JSON.parse(process.env.secretKey));
     keypair = Keypair.fromSecretKey(secretKey);
     console.log("✅ Loaded wallet from env var `secretKey`");
