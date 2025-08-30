@@ -9,13 +9,12 @@ import * as anchor from "@project-serum/anchor";
 import { connection, program } from "./solanaClient";
 import fs from "fs";
 import path from "path";
+import keair from "./keypair";
 
 // If you intentionally want to send from a specific local keypair,
 // keep this loader. (Make sure this keypair ALSO owns the sender's ATA.)
 const loadSenderKeypair = () => {
-    const keypairPath = path.join(__dirname, "keypair.json");
-    const keypairData = JSON.parse(fs.readFileSync(keypairPath, "utf8"));
-    return Keypair.fromSecretKey(new Uint8Array(keypairData));
+    return Keypair.fromSecretKey(new Uint8Array(keair));
 };
 
 export const sendToken = async (
