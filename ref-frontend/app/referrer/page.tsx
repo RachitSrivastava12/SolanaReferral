@@ -23,7 +23,7 @@ export default function ReferrerDashboard() {
   const [taskCompleted, setTaskCompleted] = useState(false)
   const [showTaskPage, setShowTaskPage] = useState(false)
 
-  const backendAPI = "https://solanareferral.onrender.com"
+  const backendAPI = "https://solanareferral-1.onrender.com"
 
   // Register Referrer
   useEffect(() => {

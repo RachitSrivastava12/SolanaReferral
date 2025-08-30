@@ -165,7 +165,7 @@ export default function CreateCampaignPage() {
 
     setLoading(true)
     try {
-      const response = await fetch("https://solanareferral.onrender.com/api/business/create-campaign", {
+      const response = await fetch("https://solanareferral-1.onrender.com/api/business/create-campaign", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
