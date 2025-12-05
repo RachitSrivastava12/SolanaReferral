@@ -4,26 +4,36 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 262.1 83.3% 57.8%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 220 14.3% 95.9%;
-    --secondary-foreground: 220.9 39.3% 11%;
-    --muted: 220 14.3% 95.9%;
-    --muted-foreground: 220 8.9% 46.1%;
-    --accent: 220 14.3% 95.9%;
-    --accent-foreground: 220.9 39.3% 11%;
+    /* Dark navy + blue/violet premium theme */
+    --background: 222 47% 6%;        /* page bg - deep navy */
+    --foreground: 0 0% 96%;          /* main text */
+
+    --card: 222 40% 10%;             /* cards - dark blue/grey */
+    --card-foreground: 0 0% 96%;
+
+    --popover: 222 40% 10%;
+    --popover-foreground: 0 0% 96%;
+
+    --primary: 210 100% 55%;         /* bright blue (CTA, highlights) */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 222 32% 15%;        /* subtle darker surfaces */
+    --secondary-foreground: 0 0% 92%;
+
+    --muted: 222 22% 22%;            /* inputs / muted blocks */
+    --muted-foreground: 0 0% 70%;
+
+    --accent: 258 90% 66%;           /* violet accent (no yellow) */
+    --accent-foreground: 0 0% 100%;
+
     --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 262.1 83.3% 57.8%;
-    --radius: 0.75rem;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 222 25% 22%;
+    --input: 222 25% 16%;
+    --ring: 210 100% 60%;
+
+    --radius: 0.5rem;
   }
 }
 
@@ -34,6 +44,121 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* Professional animations */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes subtle-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(59, 130, 246, 0.4);
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out;
+}
+
+.animate-slide-down {
+  animation: slide-down 0.4s ease-out;
+}
+
+.animate-subtle-glow {
+  animation: subtle-glow 3s ease-in-out infinite;
+}
+
+/* Premium wallet adapter styling */
+.wallet-adapter-button {
+  @apply bg-primary hover:bg-blue-600 text-primary-foreground font-semibold py-2 px-4 rounded transition-all duration-300 shadow-md hover:shadow-lg;
+}
+
+.wallet-adapter-button:not([disabled]):hover {
+  @apply shadow-lg;
+}
+
+.wallet-adapter-button[disabled] {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* Professional background */
+.premium-bg {
+  background: linear-gradient(135deg, #020617 0%, #020617 40%, #0f172a 100%);
+}
+
+/* Glass effect for modern look */
+.glass-card {
+  background: rgba(15, 23, 42, 0.85); /* slate/blue glass */
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.7);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #3b82f6, #6366f1); /* blue -> violet */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #60a5fa, #8b5cf6);
+}
+
+/* Button enhancements */
+.btn-premium {
+  @apply transition-all duration-300 shadow-md hover:shadow-lg hover:scale-105;
+}
+
+.btn-primary {
+  @apply bg-primary hover:bg-blue-600 text-white;
+}
+
+.btn-secondary {
+  @apply bg-secondary hover:bg-slate-700 text-foreground border border-muted;
+}
+
+/* Card enhancements */
+.card-premium {
+  @apply glass-card rounded-lg transition-all duration-300 hover:shadow-lg;
+}
+
+/* Stat card */
+.stat-card {
+  @apply glass-card rounded-lg p-6 border border-muted/30;
+}
+
+/* Border accent */
+.accent-left-border {
+  @apply border-l-4 border-accent;
 }
 
 /* Custom animations */
@@ -50,10 +175,10 @@
 @keyframes pulse-glow {
   0%,
   100% {
-    box-shadow: 0 0 20px rgba(139, 92, 246, 0.3);
+    box-shadow: 0 0 20px rgba(129, 140, 248, 0.3);
   }
   50% {
-    box-shadow: 0 0 30px rgba(139, 92, 246, 0.6);
+    box-shadow: 0 0 30px rgba(129, 140, 248, 0.6);
   }
 }
 
@@ -87,7 +212,6 @@
   }
   to {
     opacity: 1;
-    transform: scale(1);
   }
 }
 
@@ -112,56 +236,24 @@
   animation: scale-in 0.4s ease-out;
 }
 
-/* Wallet adapter button styling */
-.wallet-adapter-button {
-  @apply bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-white font-semibold py-3 px-6 rounded-xl transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl;
-}
-
-.wallet-adapter-button:not([disabled]):hover {
-  @apply shadow-2xl;
-}
-
-.wallet-adapter-button[disabled] {
-  @apply opacity-50 cursor-not-allowed transform-none;
-}
-
 /* Custom gradient backgrounds */
 .gradient-bg {
-  background: linear-gradient(-45deg, #667eea, #764ba2, #f093fb, #f5576c);
+  background: linear-gradient(-45deg, #1d4ed8, #4f46e5, #8b5cf6, #0ea5e9);
   background-size: 400% 400%;
   animation: gradient-shift 15s ease infinite;
 }
 
 .glass-effect {
   backdrop-filter: blur(16px) saturate(180%);
-  background-color: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(255, 255, 255, 0.125);
-}
-
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(45deg, #667eea, #764ba2);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(45deg, #5a67d8, #6b46c1);
+  background-color: rgba(15, 23, 42, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.3);
 }
 
 /* Loading spinner enhancement */
 .spinner {
-  border: 3px solid rgba(139, 92, 246, 0.3);
+  border: 3px solid rgba(129, 140, 248, 0.3);
   border-radius: 50%;
-  border-top: 3px solid #8b5cf6;
+  border-top: 3px solid #6366f1;
   width: 24px;
   height: 24px;
   animation: spin 1s linear infinite;
@@ -190,7 +282,12 @@
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
   transition: left 0.5s;
 }
 
@@ -205,15 +302,15 @@
 
 .card-hover:hover {
   transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 20px 40px rgba(15, 23, 42, 0.8);
 }
 
 /* QR Code container styling */
 .qr-container {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 50%, #8b5cf6 100%);
   padding: 20px;
   border-radius: 20px;
-  box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
+  box-shadow: 0 15px 35px rgba(37, 99, 235, 0.4);
 }
 
 /* Success animation */

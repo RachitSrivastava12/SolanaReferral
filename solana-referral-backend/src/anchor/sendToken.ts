@@ -18,7 +18,7 @@ const loadSenderKeypair = () => {
 };
 
 export const sendToken = async (
-    mintAddress: string,
+    mintAddress: string,    
     receiverSolAddress: string,
     amount: number // amount in the token's smallest units (respect decimals!)
 ) => {
