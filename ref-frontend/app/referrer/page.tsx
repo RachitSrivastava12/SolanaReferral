@@ -658,40 +658,77 @@ export default function ReferrerDashboard() {
     }
   }
 
-  const completeTask = async () => {
-    if (!publicKey || !selectedCampaign) return
+  // const completeTask = async () => {
+  //   if (!publicKey || !selectedCampaign) return
 
-    setIsCompletingTask(true)
-    try {
-      const response = await fetch(`${backendAPI}/referrer/complete-task`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          address: publicKey.toString(),
-          campaignId: selectedCampaign._id,
-          referralId: referralId,
-        }),
-      })
+  //   setIsCompletingTask(true)
+  //   try {
+  //     const response = await fetch(`${backendAPI}/referrer/complete-task`, {
+  //       method: "POST",
+  //       headers: { "Content-Type": "application/json" },
+  //       body: JSON.stringify({
+  //         address: publicKey.toString(),
+  //         campaignId: selectedCampaign._id,
+  //         referralId: referralId,
+  //       }),
+  //     })
 
-      if (!response.ok) {
-        throw new Error("Failed to complete task")
-      }
+  //     if (!response.ok) {
+  //       throw new Error("Failed to complete task")
+  //     }
 
-      const data = await response.json()
-      setTaskCompleted(true)
+  //     const data = await response.json()
+  //     setTaskCompleted(true)
 
-      console.log("Task completed successfully:", data)
-      console.log("Transaction signature:", data.transactionSignature)
-      alert(
-        `Task completed! You earned ${selectedCampaign.rewardperReferral} SOL. Transaction: ${data.transactionSignature}`,
-      )
-    } catch (error) {
-      console.error("Error completing task:", error)
-      alert("Failed to complete task. Please try again.")
-    } finally {
-      setIsCompletingTask(false)
+  //     console.log("Task completed successfully:", data)
+  //     console.log("Transaction signature:", data.transactionSignature)
+  //     alert(
+  //       `Task completed! You earned ${selectedCampaign.rewardperReferral} SOL. Transaction: ${data.transactionSignature}`,
+  //     )
+  //   } catch (error) {
+  //     console.error("Error completing task:", error)
+  //     alert("Failed to complete task. Please try again.")
+  //   } finally {
+  //     setIsCompletingTask(false)
+  //   }
+  // }
+
+    const completeTask = async () => {
+  if (!selectedCampaign || !referralId) return
+
+  setIsCompletingTask(true)
+  try {
+    const response = await fetch(`${backendAPI}/referrer/complete-task`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        referralId,
+        campaignId: selectedCampaign._id,
+      }),
+    })
+
+    if (!response.ok) {
+      const errText = await response.text()
+      throw new Error(`Failed to complete task: ${errText}`)
     }
+
+    const data = await response.json()
+    setTaskCompleted(true)
+
+    console.log("Task completed successfully:", data)
+
+    alert(
+      `Task completed!\nReferrer: ${data.referrerWallet}\nReferred: ${data.referredWallet}\nEach earned ${data.amountPerUser} tokens.\nTxs: ${data.referrerTxSignature}, ${data.referredTxSignature}`,
+    )
+  } catch (error: any) {
+    console.error("Error completing task:", error)
+    alert(error.message || "Failed to complete task. Please try again.")
+  } finally {
+    setIsCompletingTask(false)
   }
+}
+
+   
 
   const copyToClipboard = async () => {
     await navigator.clipboard.writeText(referralLink)

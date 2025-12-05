@@ -4,6 +4,9 @@ import type React from "react"
 
 import { useState, useEffect } from "react"
 import { useSearchParams } from "next/navigation"
+import { useWallet } from "@solana/wallet-adapter-react"
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -13,9 +16,14 @@ import { Upload, CheckCircle, AlertCircle, ImageIcon, Link, Smartphone, Award } 
 import { Badge } from "@/components/ui/badge"
 import { Progress } from "@/components/ui/progress"
 
+const BACKEND_API = "https://solanareferral-1.onrender.com"
+
 export default function VerifyTaskPage() {
   const searchParams = useSearchParams()
-  const referralId = searchParams.get("ref")
+  const referralId = (searchParams.get("ref") || "").toString()
+
+  const { publicKey, connected } = useWallet()
+
   const [screenshot, setScreenshot] = useState<File | null>(null)
   const [imageLink, setImageLink] = useState("")
   const [comment, setComment] = useState("")
@@ -30,7 +38,6 @@ export default function VerifyTaskPage() {
   }, [])
 
   useEffect(() => {
-    // Calculate form completion progress
     let progress = 0
     if (referralId) progress += 25
     if (screenshot || imageLink) progress += 25
@@ -53,6 +60,31 @@ export default function VerifyTaskPage() {
 
     setLoading(true)
     try {
+      if (!connected || !publicKey) {
+        alert("Please connect your wallet before submitting proof.")
+        setLoading(false)
+        return
+      }
+
+      // 1) Attach referred wallet to this referral in backend
+      try {
+        const attachRes = await fetch(`${BACKEND_API}/referrer/attach-referred`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            referralId,
+            referredWallet: publicKey.toString(),
+          }),
+        })
+
+        if (!attachRes.ok) {
+          console.error("attach-referred failed:", await attachRes.text())
+        }
+      } catch (err) {
+        console.error("Error attaching referred wallet:", err)
+      }
+
+      // 2) Submit proof to Next.js API (optional evidence store)
       const formData = new FormData()
       formData.append("referralId", referralId)
       formData.append("comment", comment)
@@ -71,9 +103,13 @@ export default function VerifyTaskPage() {
 
       if (response.ok) {
         setSubmitted(true)
+      } else {
+        console.error("submit-proof failed:", await response.text())
+        alert("Failed to submit proof. Please try again.")
       }
     } catch (error) {
       console.error("Error submitting proof:", error)
+      alert("Something went wrong while submitting proof.")
     } finally {
       setLoading(false)
     }
@@ -115,9 +151,14 @@ export default function VerifyTaskPage() {
 
   return (
     <div className="max-w-2xl mx-auto animate-slide-up">
+      {/* wallet connect for referred user */}
+      <div className="flex justify-end mb-4">
+        <WalletMultiButton />
+      </div>
+
       <Card className="glass-effect border-0 shadow-2xl">
         <CardHeader className="text-center bg-gradient-to-r from-purple-600 to-blue-600 text-white relative">
-          <div className="absolute inset-0 bg-black/10"></div>
+          <div className="absolute inset-0 bg-black/10" />
           <div className="relative z-10">
             <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
               <Upload className="w-8 h-8" />
