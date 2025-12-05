@@ -44,61 +44,6 @@ router.get("/campaigns", async (req: Request, res: Response) => {
     }
 });
 
-// NEW ROUTE: Create referral without token transfer
-// router.post("/create-referral", async (req: Request, res: Response) => {
-//     try {
-//         const { address, campaignId } = req.body;
-//
-//         if (!address || !campaignId) {
-//             return res.status(400).json({ message: 'Address and Campaign ID are required' });
-//         }
-//
-//         // Fetch campaign
-//         const campaign = await Campaign.findById(campaignId);
-//         if (!campaign) {
-//             return res.status(404).json({ message: 'Campaign not found with this ID' });
-//         }
-//
-//         // Fetch or create referrer
-//         let referrer = await Referrer.findOne({ walletAddress: address });
-//         if (!referrer) {
-//             referrer = new Referrer({ walletAddress: address, earned: 0 });
-//             await referrer.save();
-//             console.log(`Created new referrer: ${address}`);
-//         }
-//
-//         // Use businessID as String directly
-//         const businessId = campaign.businessID;
-//
-//         // Create referral entry
-//         const referral = new Referral({
-//             referrer: referrer._id,
-//             business: businessId, // String from Campaign
-//             campaign: campaign._id,
-//             paid: false,
-//             createdAt: new Date()
-//         });
-//
-//         await referral.save();
-//         console.log(`Referral created: ${referral._id} for campaign ${campaignId}`);
-//
-//         res.status(200).json({
-//             message: 'Referral created successfully',
-//             referralId: referral._id,
-//             campaign: campaign
-//         });
-//
-//     } catch (error) {
-//         console.error('Error creating referral:', error);
-//         if (error instanceof Error) {
-//             console.error('Error details:', error.message, error.stack);
-//         }
-//         res.status(500).json({
-//             message: 'Server error',
-//             error: process.env.NODE_ENV === 'development' ? error.message : undefined
-//         });
-//     }
-// });
 
 const createReferralHandler: RequestHandler = async (req: Request, res: Response) => {
     try {
@@ -168,65 +113,131 @@ const createReferralHandler: RequestHandler = async (req: Request, res: Response
 
 router.post("/create-referral", createReferralHandler);
 // NEW ROUTE: Complete task and transfer tokens
-router.post("/complete-task", async (req: Request, res: Response) => {
-    try {
-        const { address, campaignId, referralId } = req.body;
+// router.post("/complete-task", async (req: Request, res: Response) => {
+//     try {
+//         const { address, campaignId, referralId } = req.body;
         
-        if (!address || !campaignId || !referralId) {
-            res.status(400).json({ message: 'Address, Campaign ID, and Referral ID are required' });
-            return;
-        }
+//         if (!address || !campaignId || !referralId) {
+//             res.status(400).json({ message: 'Address, Campaign ID, and Referral ID are required' });
+//             return;
+//         }
 
-        const campaign = await Campaign.findById(campaignId);
-        if (!campaign) {
-            res.status(404).json({ message: 'Campaign not found with this ID' });
-            return;
-        }
+//         const campaign = await Campaign.findById(campaignId);
+//         if (!campaign) {
+//             res.status(404).json({ message: 'Campaign not found with this ID' });
+//             return;
+//         }
 
-        const referral = await Referral.findById(referralId);
-        if (!referral) {
-            res.status(404).json({ message: 'Referral not found' });
-            return;
-        }
+//         const referral = await Referral.findById(referralId);
+//         if (!referral) {
+//             res.status(404).json({ message: 'Referral not found' });
+//             return;
+//         }
 
-        // Check if already paid
-        if (referral.paid) {
-            res.status(400).json({ message: 'Task already completed and paid' });
-            return;
-        }
+//         // Check if already paid
+//         if (referral.paid) {
+//             res.status(400).json({ message: 'Task already completed and paid' });
+//             return;
+//         }
 
-        const referrer = await Referrer.findOne({ walletAddress: address });
-        if (!referrer) {
-            res.status(404).json({ message: 'Referrer not found' });
-            return;
-        }
+//         const referrer = await Referrer.findOne({ walletAddress: address });
+//         if (!referrer) {
+//             res.status(404).json({ message: 'Referrer not found' });
+//             return;
+//         }
 
-        const mintAddress = "8zY8qSdfRAb1eEvLkU4hWEFLdbYMrpWMTh59WR4r158s";
+//         const mintAddress = "8zY8qSdfRAb1eEvLkU4hWEFLdbYMrpWMTh59WR4r158s";
 
-        // Send tokens
-        const txSig = await sendToken(
-            mintAddress,                    // mint address
-            address,                       // receiver wallet address
-            campaign.rewardperReferral     // amount to send
-        );
+//         // Send tokens
+//         const txSig = await sendToken(
+//             mintAddress,                    // mint address
+//             address,                       // receiver wallet address
+//             campaign.rewardperReferral     // amount to send
+//         );
 
-        // Update referral as paid
-        referral.paid = true;
-        referral.transactionSignature = txSig;
-        await referral.save();
+//         // Update referral as paid
+//         referral.paid = true;
+//         referral.transactionSignature = txSig;
+//         await referral.save();
 
-        res.status(200).json({
-            message: 'Task completed and tokens sent successfully',
-            referralId: referral._id,
-            transactionSignature: txSig,
-            amountEarned: campaign.rewardperReferral
-        });
+//         res.status(200).json({
+//             message: 'Task completed and tokens sent successfully',
+//             referralId: referral._id,
+//             transactionSignature: txSig,
+//             amountEarned: campaign.rewardperReferral
+//         });
 
-    } catch (error) {
-        console.error('Error completing task:', error);
-        res.status(500).json({ message: 'Server error' });
+//     } catch (error) {
+//         console.error('Error completing task:', error);
+//         res.status(500).json({ message: 'Server error' });
+//     }
+// });
+
+router.post("/complete-task", async (req: Request, res: Response) => {
+  try {
+    const { referralId, campaignId } = req.body;
+
+    if (!campaignId || !referralId) {
+      res.status(400).json({ message: "Campaign ID and Referral ID are required" });
+      return;
     }
+
+    const campaign = await Campaign.findById(campaignId);
+    if (!campaign) {
+      res.status(404).json({ message: "Campaign not found with this ID" });
+      return;
+    }
+
+    // Load referral + referrer info
+    const referral = await Referral.findById(referralId).populate("referrer");
+    if (!referral) {
+      res.status(404).json({ message: "Referral not found" });
+      return;
+    }
+
+    if (referral.paid || referral.status === "completed") {
+      res.status(400).json({ message: "Task already completed and paid" });
+      return;
+    }
+
+    const referrerDoc = referral.referrer as any;
+    const referrerWallet = referrerDoc.walletAddress;
+    const referredWallet = referral.referredWallet;
+
+    if (!referrerWallet || !referredWallet) {
+      res.status(400).json({ message: "Referrer or referred wallet missing" });
+      return;
+    }
+
+    const mintAddress = "8zY8qSdfRAb1eEvLkU4hWEFLdbYMrpWMTh59WR4r158s";
+    const amount = campaign.rewardperReferral;
+
+    // 🔥 Pay BOTH:
+    const referrerTxSig = await sendToken(mintAddress, referrerWallet, amount);
+    const referredTxSig = await sendToken(mintAddress, referredWallet, amount);
+
+    referral.paid = true;
+    referral.status = "completed";
+    referral.referrerTxSignature = referrerTxSig;
+    referral.referredTxSignature = referredTxSig;
+    referral.transactionSignature = referrerTxSig; // keep legacy field
+    await referral.save();
+
+    res.status(200).json({
+      message: "Task completed and tokens sent to both users",
+      referralId: referral._id,
+      referrerWallet,
+      referredWallet,
+      referrerTxSignature: referrerTxSig,
+      referredTxSignature: referredTxSig,
+      amountPerUser: amount
+    });
+  } catch (error) {
+    console.error("Error completing task:", error);
+    res.status(500).json({ message: "Server error" });
+  }
 });
+
 
 // Keep the old route for backward compatibility (marked as deprecated)
 router.post("/select-campaign", async (req: Request, res: Response) => {
@@ -275,5 +286,32 @@ router.post("/select-campaign", async (req: Request, res: Response) => {
         res.status(500).json({ message: 'Server error' });
     }
 });
+
+router.post("/attach-referred", async (req: Request, res: Response) => {
+  try {
+    const { referralId, referredWallet } = req.body;
+
+    if (!referralId || !referredWallet) {
+      res.status(400).json({ message: "Referral ID and referred wallet are required" });
+      return;
+    }
+
+    const referral = await Referral.findById(referralId);
+    if (!referral) {
+      res.status(404).json({ message: "Referral not found" });
+      return;
+    }
+
+    referral.referredWallet = referredWallet;
+    await referral.save();
+
+    res.status(200).json({ message: "Referred wallet attached", referralId: referral._id });
+  } catch (err) {
+    console.error("attach-referred error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
 
 export default router;
