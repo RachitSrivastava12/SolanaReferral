@@ -1,26 +1,97 @@
-# Depin Referral System (WIP)
+# Solana Referral System
 
-A decentralized referral system built on Solana. It allows users to generate unique referral links and track sign-ups through the Solana blockchain.
+A **Solana-based referral and attribution system** designed to enable on-chain incentive distribution using SPL tokens.  
+Built with **Anchor**, supporting verifiable reward transfers between users.
 
-## 🔗 Live Demo
-[Visit Live Site](https://solana-referral.vercel.app/)
+This project demonstrates how referral logic and rewards can be enforced **directly on-chain**, removing the need for off-chain trust.
 
-## 📂 Features
-- Generate referral links
-- Track user sign-ups via referrer
-- Solana wallet connection
-- On-chain data logging (WIP)
+---
 
-## 🛠 Tech Stack
-- Next.js
-- Solana Web3.js
-- Phantom Wallet
-- Vercel (Deployment)
+## ✨ Features
 
-## 🚀 Running Locally
+- On-chain referral reward transfers using SPL tokens  
+- Secure token movement via Anchor CPI calls  
+- Wallet-authorized reward distribution  
+- Composable design for protocol integrations  
+- Suitable for growth, attribution, and incentive systems in Solana apps  
 
-```bash
-git clone https://github.com/RachitSrivastava12/SolanaReferral
-cd SolanaReferral
-npm install
-npm run dev
+---
+
+## 🏗 Architecture Overview
+
+The system consists of:
+
+- **Smart Contract (Anchor Program)**  
+  Handles secure SPL token transfers for referral rewards.
+
+- **Referral Logic (Off-chain / App Layer)**  
+  Determines *who* receives rewards and *when*, while the contract enforces *how* rewards move on-chain.
+
+---
+
+## 🔐 Smart Contract Details
+
+### Program ID
+
+4uL34WQ31gYhMjkks7bUd9yx2TYztvj2iUp9BjXvpnQg
+
+
+### Core Instruction
+
+#### `send_token`
+
+Transfers SPL tokens from a sender’s token account to a recipient’s token account using CPI.
+
+```rust
+pub fn send_token(ctx: Context<SendToken>, amount: u64) -> Result<()>
+Accounts:
+
+from_token_account – Sender’s SPL token account (mutable)
+
+to_token_account – Recipient’s SPL token account (mutable)
+
+authority – Signer owning the sender token account
+
+token_program – SPL Token Program
+
+🔄 How It Works
+
+A user performs an action that qualifies for a referral reward
+
+The application verifies referral eligibility
+
+The Anchor program executes an SPL token transfer
+
+Rewards are settled fully on-chain, transparently and securely
+
+🧪 Example Use Cases
+
+Protocol referral programs
+
+User acquisition incentives
+
+Ambassador or affiliate payouts
+
+DAO reward distribution
+
+Growth attribution systems
+
+🛠 Tech Stack
+
+Solana
+
+Anchor Framework
+
+Rust
+
+SPL Token Program
+
+🚀 Project Status
+
+✅ Anchor smart contract implemented
+
+✅ SPL token transfers working
+
+✅ MVP completed
+
+🔄 Extensible for additional referral logic (tiers, limits, analytics)
