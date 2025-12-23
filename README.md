@@ -33,10 +33,10 @@ The system consists of:
 `send_token`  
 Transfers SPL tokens from a sender’s token account to a recipient’s token account using CPI.
 
-```rust
-pub fn send_token(ctx: Context<SendToken>, amount: u64) -> Result<()>
+``rust
+`pub fn send_token(ctx: Context<SendToken>, amount: u64) -> Result<()>
 
-### Accounts
+## Accounts
 
 - `from_token_account` – Sender’s SPL token account (mutable)
 - `to_token_account` – Recipient’s SPL token account (mutable)
