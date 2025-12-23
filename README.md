@@ -64,6 +64,9 @@ Transfers SPL tokens from a sender’s token account to a recipient’s token ac
 - Anchor Framework
 - Rust
 - SPL Token Program
+- Frontend : nextjs
+- Backend : expressjs
+- Database : mongoDB
 
 ## 🚀 Project Status
 
