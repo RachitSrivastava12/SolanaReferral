@@ -1,0 +1,5 @@
+{
+        "directory": "ref-frontend",       
+        "start_command": "npm run dev", 
+        "port": 3000                  
+}
